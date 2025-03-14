@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPFB Solver</title>
+    <title>CP Solver</title>
     <style>
-        /* Apply the font size and margin changes */
         body {
-            font-family: 'Courier New', Courier, monospace;  /* Monospaced font */
-            font-size: 20px;  /* Set font size to 16px */
-            margin: 10px;  /* Set margin to 10px */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            text-align: center;
+            margin-top: 50px;
         }
 
         h1 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
+            font-size: 1.8em;
         }
 
         label {
@@ -22,59 +21,48 @@
             margin-right: 10px;
         }
 
-        input {
+        select {
             font-size: 1em;
             padding: 5px;
-            margin-bottom: 10px;
-            width: 100%;  /* Stretch the input box to fill the width */
-            box-sizing: border-box;  /* Ensures padding is included in the width */
         }
 
         button {
             font-size: 1.2em;
-            padding: 10px 10px;
+            padding: 10px;
             cursor: pointer;
+            margin-top: 20px;
         }
 
-        ul {
-            font-size: 1em;  /* Keep the list items in 16px font size */
-            line-height: 1.5;
-        }
-
-        li {
-            margin-bottom: 10px;
+        #loading-message {
+            display: none;
+            font-size: 1.2em;
+            color: red;
+            font-weight: bold;
+            margin-top: 20px;
         }
     </style>
+    <script>
+        function showLoading() {
+            document.getElementById("loading-message").style.display = "block";
+        }
+    </script>
 </head>
 <body>
-    <h1>CPFB Solver</h1>
-    <form method="post">
-        <p>Enter a scramble and rotation here. Note: It only works with yellow-blue-orange in DBL, but you can add a rotation before the scramble to get another color in there</p>
-        <p>Example use: 
-            Scramble - L' B2 L F2 L' U2 L B2 D2 R F2 D2 F' R B D' B2 U L D B.
-            Say you want to solve white-red DL.
-            In that case, you need to rotate yellow-blue-orange into white-red-blue before scrambling, so add z2 before scrambling, and dont forget y x after. 
-            Enter Scramble: z2 L' B2 L F2 L' U2 L B2 D2 R F2 D2 F' R B D' B2 U L D B.
-            Enter Rotation: y x.
-        </p>
-        <label for="scramble">Enter Scramble:</label>
-        <input type="text" name="scramble" id="scramble" required>
+    <h1>CP Solver</h1>
+    <form method="post" action="/initialize" onsubmit="showLoading()">
+        <label for="mode">Select Mode:</label>
+        <select name="mode" id="mode" required>
+            <option value="FB">CPFB</option>
+            <option value="FB_D">CPFB on bottom</option>
+            <option value="Line">CPLine</option>
+            <option value="DLcorners">CPCorners</option>
+            <option value="223">CP223</option>
+            <option value="223+EO">CP223+EO</option>
+        </select>
         <br>
-        <label for="rotation">Enter Rotation:</label>
-        <input type="text" name="rotation" id="rotation">
-        <br>
-        <button type="submit">Submit</button>
+        <button type="submit">Initialize Solver</button>
     </form>
 
-    {% if output_list %}
-        <h2>Scramble: {{ scramble }}</h2>  <!-- Display the scramble -->
-        <h2>Rotation: {{ rotation }}</h2>  <!-- Display the rotation -->
-        <h2>CPFB Solutions:</h2>
-        <ul>
-            {% for item in output_list %}
-                <li>{{ loop.index }}. {{ item }} ({{ item.split(" ") | length }} moves)</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <p id="loading-message">Initiating solver, please wait...</p>
 </body>
 </html>
