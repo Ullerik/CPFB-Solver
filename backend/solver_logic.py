@@ -355,4 +355,8 @@ def CP_solver(scramble, mode, search_algs, table):
                 cube_cp.apply_int_moves(invert_alg_array(alg))
 
         cube.apply_int_moves(invert_alg_array(search_alg))
+
+    # make unique
+    solves = list(set(solves))
+    
     return solves
