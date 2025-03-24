@@ -359,6 +359,7 @@ def CP_solver(scramble, mode, search_algs, table):
     # make unique
     solves = list(set(solves))
     
+<<<<<<< HEAD
     return solves
 
 
@@ -442,3 +443,6 @@ def get_all_solutions(scramble, mode, search_algs, table, preorientation, neutra
         for solution in oriented_solutions:
             solutions.append((orientation + " " + solution).strip())
     return solutions
+=======
+    return solves
+>>>>>>> 26616da5966baeda8ff865bf6cfa65a4f3c367b9
