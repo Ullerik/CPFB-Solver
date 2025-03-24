@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 import numpy as np
-from backend.solver_logic import CP_solver_setup, CP_solver
+from backend.solver_logic import CP_solver_setup, get_all_solutions
+import webbrowser
+import threading
 
 move_transition = np.array([ 
 #   [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44],
@@ -20,7 +22,7 @@ MODE_SETTINGS = {
     "Line": {"search_depth": 3, "table_depth": 3},
     "DLcorners": {"search_depth": 2, "table_depth": 3},
     "223": {"search_depth": 5, "table_depth": 5},
-    "223+EO": {"search_depth": 5, "table_depth": 5},
+    "223+EO": {"search_depth": 6, "table_depth": 6},
 }
 
 # Global solver variables
@@ -63,19 +65,22 @@ def solve():
         neutrality = request.form["neutrality"]
         scramble = request.form["scramble"]
 
-        # Store in global variables (or session if needed)
+        # Store in global variables
         global last_orientation, last_neutrality, last_scramble
         last_orientation = orientation
         last_neutrality = neutrality
         last_scramble = scramble
 
         print("Solving:", scramble)
-        solves = CP_solver(scramble, mode, search_algs, table)
+        print("Orientation:", orientation)
+        print("Neutrality:", neutrality)
+        print("Mode:", mode)
+        solves = get_all_solutions(scramble, mode, search_algs, table, orientation, neutrality)
 
         # Sort solutions
         def sort_solves(solves):
-            solves.sort(key=lambda x: len(x.split(" ")))
             solves.sort(key=lambda x: x.count("S") + x.count("M") + x.count("E"))
+            solves.sort(key=lambda x: (len(x.split(" ")) - (x.count("x") + x.count("y") + x.count("z"))) ) # TODO: Fix this to sort by actual moves (?)
             solves.sort(key=lambda x: x.count("f") + x.count("F"))
             return solves
 
@@ -99,5 +104,10 @@ def solve():
     )
 
 
+
+def open_browser():
+    webbrowser.open_new("http://127.0.0.1:5000/")
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    threading.Timer(1.5, open_browser).start()  # Delay to allow Flask to start
+    app.run()

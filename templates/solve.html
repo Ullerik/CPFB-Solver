@@ -48,6 +48,9 @@
     </style>
 </head>
 <body>
+    <div class="alert">
+        <strong>Important:</strong> To shut down properly, go into Task Manager and shut down. Exiting will mean the program runs in the background.
+    </div>
     <h1>CP Solver - {{ mode }}</h1>
     
     <form method="post" action="/solve">
@@ -77,7 +80,9 @@
         <div class="solution-box">
             <h2>Solutions:</h2>
             {% for solution in output_list %}
-                <p>{{ loop.index }}. {{ solution }} ({{ solution.split(" ")|length }} moves)</p>
+                {% set moves = solution.split(" ") %}
+                {% set move_count = moves|length - moves|select("in", ["x", "x'", "x2", "y", "y'", "y2", "z", "z'", "z2"])|list|length %}
+                <p>{{ loop.index }}. {{ solution }} ({{ move_count }} moves)</p>
             {% endfor %}
         </div>
     {% endif %}

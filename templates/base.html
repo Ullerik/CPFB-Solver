@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CP Solver{% endblock %}</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+        }
+
+        label {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        select, input {
+            font-size: 1em;
+            padding: 5px;
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .solution-box {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid black;
+            display: inline-block;
+            text-align: left;
+        }
+
+        .alert {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="alert">
+        <strong>Important:</strong> To shut down properly, go into Task Manager and shut down. Exiting will mean the program runs in the background.
+    </div>
+
+    {% block content %}{% endblock %} <!-- Placeholder for content -->
+</body>
+</html>

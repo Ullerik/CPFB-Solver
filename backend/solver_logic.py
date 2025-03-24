@@ -360,3 +360,85 @@ def CP_solver(scramble, mode, search_algs, table):
     solves = list(set(solves))
     
     return solves
+
+
+# the below is used for the orientation solver - we simply rotate before the scramble such that DBL becomes the wanted corner
+sticker_to_orientation = {
+    # sticker ID
+    0: "x' y",
+    2: "x' y2",
+    6: "x'",
+    8: "x' y'",
+    9: "z y2",
+    11: "z y'",
+    15: "z y",
+    17: "z",
+    18: "x y'",
+    20: "x",
+    24: "x y2",
+    26: "x y",
+    27: "z'",
+    29: "z' y",
+    33: "z' y'",
+    35: "z' y2",
+    36: "x2 y",
+    38: "z2",
+    42: "x2",
+    44: "x2 y'",
+    45: "y",
+    47: "y2",
+    51: "",
+    53: "y'",
+}
+
+corner_orientations = [0,2,6,8,9,11,15,17,18,20,24,26,27,29,33,35,36,38,42,44,45,47,51,53]
+
+def get_oriented_scramble(scramble, sticker):
+    orientation = sticker_to_orientation[sticker]
+    oriented_scramble = scramble
+    if orientation:
+        oriented_scramble = inverse_alg(orientation) + " " + oriented_scramble
+    cube = Cube("id")
+    cube.apply_moves(oriented_scramble)
+    # locate sticker 51
+    index = 0
+    for i in range(54):
+        if cube.state[i] == 51:
+            index = i
+            break
+    orientation = sticker_to_orientation[index]
+    if orientation:
+        oriented_scramble += " " + orientation
+    return oriented_scramble, orientation # return orientation because it should be used to orient the cube before solving. The extended scramble is just used for logic purposes
+
+orientation_dict = {
+    "None": [51],
+    "y2": [51, 47],
+    "y": [51, 47, 45, 53],
+    "x2y2": [51, 47, 42, 38],
+    "x2y": [51, 47, 45, 53, 42, 38, 44, 36],
+    "full": corner_orientations,
+}
+
+def get_oriented_scramble_from_preorientation(scramble, preorientation, neutrality):
+    oriented_scrambles = []
+    orientations = []
+    preorientation = inverse_alg(preorientation)
+    escramble = (preorientation + " " + scramble).strip()
+
+    stickers = orientation_dict[neutrality]
+    for sticker in stickers:
+        oriented_scramble, orientation = get_oriented_scramble(escramble, sticker)
+        oriented_scrambles.append(oriented_scramble)
+        orientations.append(orientation)
+    return oriented_scrambles, orientations
+
+
+def get_all_solutions(scramble, mode, search_algs, table, preorientation, neutrality):
+    oriented_scrambles, orientations = get_oriented_scramble_from_preorientation(scramble, preorientation, neutrality)
+    solutions = []
+    for oriented_scramble, orientation in zip(oriented_scrambles, orientations):
+        oriented_solutions = CP_solver(oriented_scramble, mode, search_algs, table)
+        for solution in oriented_solutions:
+            solutions.append((orientation + " " + solution).strip())
+    return solutions

@@ -47,7 +47,7 @@ class Cube:
         '''
         self.mode = mode
         if mode == "": # normal
-            mode = "normal"
+            self.mode = "normal"
             self.state = np.array([1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6])
         elif mode == "id": #show index of each sticker
             self.state = np.array(range(54))
@@ -59,6 +59,8 @@ class Cube:
             self.state = np.array([0,0,0,1,1,0,1,0,0,0,0,0,0,2,2,0,2,2,0,0,0,3,3,3,3,3,3,0,0,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,6,0,0,6,6,6,6,6,6])
         elif mode == "FB": # First block (for cpfb)
             self.state = np.array([0,0,0,1,0,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,3,0,0,3,0,0,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,6,0,0,6,0,0,6,0,0])
+        elif mode == "FB_D": # First block (for cpfb)
+            self.state = np.array([0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,4,4,4,0,0,0,0,0,0,0,0,0,6,6,0,6,6,0,6,6,0])
         elif mode == "Line": # 1x1x3 (for cpline)
             self.state = np.array([0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,4,4,4,0,0,0,0,0,0,0,0,0,6,0,0,6,0,0,6,0,0])
         elif mode == "DLcorners": # DL-corners (for cp)
@@ -67,7 +69,7 @@ class Cube:
             self.state = np.array([0,0,0,1,1,5,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,5,3,3,0,3,3,0,0,0,4,4,4,4,4,4,0,5,0,5,0,5,0,5,0,6,6,0,6,6,5,6,6,0])    
         else:
             print("NOTE! Mode not found. Using normal mode.")
-            mode = "normal"
+            self.mode = "normal"
             self.state = np.array([1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6])
 
 

@@ -48,6 +48,9 @@
     </script>
 </head>
 <body>
+    <div class="alert">
+        <strong>Important:</strong> To shut down properly, go into Task Manager and shut down. Exiting will mean the program runs in the background.
+    </div>
     <h1>CP Solver</h1>
     <form method="post" action="/initialize" onsubmit="showLoading()">
         <label for="mode">Select Mode:</label>
@@ -56,8 +59,8 @@
             <option value="FB_D">CPFB on bottom</option>
             <option value="Line">CPLine</option>
             <option value="DLcorners">CPCorners</option>
-            <option value="223">CP223</option>
-            <option value="223+EO">CP223+EO</option>
+            <option value="223">CP223 (slow)</option>
+            <option value="223+EO">CP223+EO (very slow)</option>
         </select>
         <br>
         <button type="submit">Initialize Solver</button>
